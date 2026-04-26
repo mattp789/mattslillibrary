@@ -1,0 +1,13 @@
+node_modules
+client/node_modules
+client/src
+client/public
+client/index.html
+client/vite.config.js
+uploads
+cache
+.env
+.git
+*.md
+docs
+tests
