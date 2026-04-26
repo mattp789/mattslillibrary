@@ -40,9 +40,13 @@ function UsersTab() {
 
   const handleReset = async (e) => {
     e.preventDefault();
-    await adminResetPassword(resetTarget.id, resetPw);
-    setResetTarget(null);
-    setResetPw('');
+    try {
+      await adminResetPassword(resetTarget.id, resetPw);
+      setResetTarget(null);
+      setResetPw('');
+    } catch {
+      alert('Password reset failed');
+    }
   };
 
   return (
@@ -203,17 +207,25 @@ function AllBooksTab() {
 
   const handleDelete = async (id, title) => {
     if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
-    await adminDeleteBook(id);
-    setBooks(prev => prev.filter(b => b.id !== id));
+    try {
+      await adminDeleteBook(id);
+      setBooks(prev => prev.filter(b => b.id !== id));
+    } catch {
+      alert('Delete failed');
+    }
   };
 
   const handleShare = async (book) => {
-    if (book.isShared) {
-      await adminUnshareBook(book.id);
-    } else {
-      await adminShareBook(book.id);
+    try {
+      if (book.isShared) {
+        await adminUnshareBook(book.id);
+      } else {
+        await adminShareBook(book.id);
+      }
+      load();
+    } catch {
+      alert('Share toggle failed');
     }
-    load();
   };
 
   return (
