@@ -441,3 +441,43 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 0.85rem;
   text-align: center;
 }
+
+/* ── Library header actions ── */
+.library-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.admin-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+
+.signout-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+
+.shared-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
