@@ -11,6 +11,7 @@ const router = express.Router();
 
 const upload = multer({
   dest: path.join(__dirname, '../uploads'),
+  limits: { fileSize: 200 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const isPdf = file.mimetype === 'application/pdf' || file.originalname.endsWith('.pdf');
     cb(null, isPdf);
@@ -40,7 +41,8 @@ router.post('/', upload.single('pdf'), async (req, res) => {
   try {
     words = await extractWords(finalPath);
     if (words.length === 0) hasWarning = true;
-  } catch {
+  } catch (err) {
+    console.error('PDF extraction failed:', err);
     hasWarning = true;
   }
 
