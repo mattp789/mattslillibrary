@@ -12,6 +12,7 @@ app.use(cookieParser());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/books', require('./routes/books'));
+app.use('/api/admin', require('./routes/admin'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/dist')));
