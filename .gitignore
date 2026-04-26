@@ -6,3 +6,4 @@ uploads/*
 cache/*
 !cache/.gitkeep
 *.log
+.env
