@@ -21,6 +21,14 @@ export async function getWords(id) {
   return res.json();
 }
 
+export async function saveProgress(id, index, wpm) {
+  await fetch(`${BASE}/books/${id}/progress`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ index, wpm }),
+  });
+}
+
 export async function deleteBook(id) {
   const res = await fetch(`${BASE}/books/${id}`, { method: 'DELETE' });
   if (!res.ok) throw new Error('Delete failed');

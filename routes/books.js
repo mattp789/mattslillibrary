@@ -63,6 +63,16 @@ router.get('/:id/words', (req, res) => {
   res.json(words);
 });
 
+// PUT /api/books/:id/progress
+router.put('/:id/progress', (req, res) => {
+  const { index, wpm } = req.body;
+  if (typeof index !== 'number') return res.status(400).json({ error: 'index required' });
+  const book = storage.getBook(req.params.id);
+  if (!book) return res.status(404).json({ error: 'Not found' });
+  storage.saveProgress(req.params.id, index, wpm);
+  res.status(204).end();
+});
+
 // DELETE /api/books/:id
 router.delete('/:id', (req, res) => {
   const book = storage.getBook(req.params.id);

@@ -327,6 +327,26 @@ button { font-family: inherit; cursor: pointer; }
   border-color: var(--accent);
 }
 
+/* ── Focus mode ── */
+.reader-focused {
+  padding: 0;
+}
+
+.reader-focused .orp-stage {
+  cursor: none;
+}
+
+/* ── Rewind button ── */
+.rewind-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
 /* ── Error state ── */
 .reader-error {
   display: flex;
