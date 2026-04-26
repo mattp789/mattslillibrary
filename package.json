@@ -1,0 +1,29 @@
+{
+  "name": "rsvp-reader",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "node --watch server.js",
+    "client:dev": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "test:server": "jest --testPathPattern=tests/",
+    "test:client": "npm --prefix client run test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "pdfjs-dist": "3.11.174",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
