@@ -11,11 +11,11 @@ primary_region = "iad"
   min_machines_running = 0
 
   [[http_service.checks]]
-    grace_period = "10s"
+    grace_period = "30s"
     interval = "30s"
     method = "GET"
     path = "/api/auth/me"
-    timeout = "5s"
+    timeout = "10s"
 
 [[vm]]
   size = "shared-cpu-1x"
