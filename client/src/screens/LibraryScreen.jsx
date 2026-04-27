@@ -21,15 +21,15 @@ export default function LibraryScreen({ onOpen, onAdmin }) {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (!file.name.endsWith('.pdf') && file.type !== 'application/pdf') {
-      showToast('Only PDF files are supported');
+    if (!/\.(pdf|epub)$/i.test(file.name) && !['application/pdf', 'application/epub+zip'].includes(file.type)) {
+      showToast('Only PDF and EPUB files are supported');
       return;
     }
     setUploading(true);
     try {
       const book = await uploadBook(file);
       setBooks(prev => [book, ...prev]);
-      if (book.hasWarning) showToast('Upload succeeded but text extraction failed — try a text-based PDF');
+      if (book.hasWarning) showToast('Upload succeeded but text extraction failed — try a different file');
     } catch {
       showToast('Upload failed');
     } finally {
@@ -57,10 +57,10 @@ export default function LibraryScreen({ onOpen, onAdmin }) {
             <button className="admin-btn" onClick={onAdmin}>Admin</button>
           )}
           <label className={`upload-btn${uploading ? ' disabled' : ''}`}>
-            {uploading ? 'Uploading…' : '+ Upload PDF'}
+            {uploading ? 'Uploading…' : '+ Upload Book'}
             <input
               type="file"
-              accept=".pdf,application/pdf"
+              accept=".pdf,.epub,application/pdf,application/epub+zip"
               style={{ display: 'none' }}
               onChange={handleFileChange}
               disabled={uploading}
@@ -73,7 +73,7 @@ export default function LibraryScreen({ onOpen, onAdmin }) {
       <div className="book-grid">
         {books.length === 0 && (
           <div className="empty-state">
-            <p>No books yet. Upload a PDF to get started.</p>
+            <p>No books yet. Upload a PDF or EPUB to get started.</p>
           </div>
         )}
         {books.map(book => (
@@ -83,7 +83,7 @@ export default function LibraryScreen({ onOpen, onAdmin }) {
             <div className="book-title" title={book.title}>{book.title}</div>
             <div className="word-count">{book.wordCount.toLocaleString()} words</div>
             {book.hasWarning && (
-              <p className="warning-msg">Text could not be extracted — this may be a scanned PDF.</p>
+              <p className="warning-msg">Text could not be extracted — this may be a scanned or image-only file.</p>
             )}
             <div className="book-actions">
               <button className="btn-read" onClick={() => onOpen(book)}>Read</button>

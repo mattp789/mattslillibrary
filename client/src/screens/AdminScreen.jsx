@@ -174,7 +174,7 @@ function SharedLibraryTab() {
         <h2>Shared Library</h2>
         <label className={`admin-add-btn${uploading ? ' disabled' : ''}`}>
           {uploading ? 'Uploading…' : 'Upload Shared Book'}
-          <input type="file" accept=".pdf,application/pdf" style={{ display: 'none' }}
+          <input type="file" accept=".pdf,.epub,application/pdf,application/epub+zip" style={{ display: 'none' }}
             onChange={handleUpload} disabled={uploading} />
         </label>
       </div>

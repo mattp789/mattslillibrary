@@ -9,12 +9,15 @@ const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
 
+const ACCEPTED_MIME = new Set(['application/pdf', 'application/epub+zip']);
+const ACCEPTED_EXT = /\.(pdf|epub)$/i;
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 200 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const isPdf = file.mimetype === 'application/pdf' || file.originalname.endsWith('.pdf');
-    cb(null, isPdf);
+    const ok = ACCEPTED_MIME.has(file.mimetype) || ACCEPTED_EXT.test(file.originalname);
+    cb(null, ok);
   },
 });
 
@@ -28,10 +31,11 @@ router.get('/', async (req, res) => {
 
 // POST /api/books
 router.post('/', upload.single('pdf'), async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'File must be a PDF' });
+  if (!req.file) return res.status(400).json({ error: 'File must be a PDF or EPUB' });
 
   const id = uuidv4();
-  const title = path.basename(req.file.originalname, '.pdf');
+  const ext = path.extname(req.file.originalname);
+  const title = path.basename(req.file.originalname, ext);
   const buffer = req.file.buffer;
 
   let words = [];
