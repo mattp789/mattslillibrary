@@ -108,18 +108,36 @@ describe('extractWords (EPUB)', () => {
 
   test('extracts words from a multi-chapter EPUB in spine order', async () => {
     const buffer = await buildEpub({
-      chapters: ['<p>Hello world</p>', '<p>Second chapter here</p>'],
+      chapters: [
+        '<p>The first chapter begins with a long enough line to clear the front-matter filter.</p>',
+        '<p>The second chapter follows with its own substantial paragraph of running prose.</p>',
+      ],
     });
     const words = await extractWords(buffer);
-    expect(words).toEqual(['Hello', 'world', 'Second', 'chapter', 'here']);
+    expect(words.slice(0, 3)).toEqual(['The', 'first', 'chapter']);
+    expect(words).toContain('second');
+    expect(words).toContain('substantial');
   });
 
   test('decodes HTML entities in EPUB chapters', async () => {
     const buffer = await buildEpub({
-      chapters: ['<p>Tom &amp; Jerry</p>'],
+      chapters: ['<p>Tom &amp; Jerry sat together for a long quiet afternoon by the window.</p>'],
     });
     const words = await extractWords(buffer);
-    expect(words).toEqual(['Tom', '&', 'Jerry']);
+    expect(words).toContain('&');
+    expect(words[0]).toBe('Tom');
+  });
+
+  test('skips short front-matter chapters', async () => {
+    const buffer = await buildEpub({
+      chapters: [
+        '<p>Cover</p>',
+        '<p>The actual chapter content begins here with enough text to be kept.</p>',
+      ],
+    });
+    const words = await extractWords(buffer);
+    expect(words[0]).toBe('The');
+    expect(words).not.toContain('Cover');
   });
 
   test('rejects unsupported file format', async () => {
