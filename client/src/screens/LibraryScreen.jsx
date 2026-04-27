@@ -29,7 +29,7 @@ export default function LibraryScreen({ onOpen, onAdmin }) {
     try {
       const book = await uploadBook(file);
       setBooks(prev => [book, ...prev]);
-      if (book.hasWarning) showToast('Upload succeeded but text extraction failed — try a different file');
+      if (book.hasWarning) showToast(book.warningReason || 'Upload succeeded but text extraction failed');
     } catch {
       showToast('Upload failed');
     } finally {

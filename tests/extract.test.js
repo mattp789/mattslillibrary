@@ -128,16 +128,22 @@ describe('extractWords (EPUB)', () => {
     expect(words[0]).toBe('Tom');
   });
 
-  test('skips short front-matter chapters', async () => {
-    const buffer = await buildEpub({
-      chapters: [
-        '<p>Cover</p>',
-        '<p>The actual chapter content begins here with enough text to be kept.</p>',
-      ],
-    });
+  test('returns empty array when all chapters are empty', async () => {
+    const buffer = await buildEpub({ chapters: ['<p></p>'] });
     const words = await extractWords(buffer);
-    expect(words[0]).toBe('The');
-    expect(words).not.toContain('Cover');
+    expect(words).toEqual([]);
+  });
+
+  test('throws clear error for DRM-protected EPUB', async () => {
+    const zip = new JSZip();
+    zip.file('mimetype', 'application/epub+zip');
+    zip.file('META-INF/encryption.xml', '<encryption/>');
+    zip.file('META-INF/container.xml',
+      `<container xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+         <rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles>
+       </container>`);
+    const buffer = await zip.generateAsync({ type: 'nodebuffer' });
+    await expect(extractWords(buffer)).rejects.toThrow(/DRM-protected/);
   });
 
   test('rejects unsupported file format', async () => {

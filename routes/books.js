@@ -40,13 +40,18 @@ router.post('/', upload.single('pdf'), async (req, res) => {
 
   let words = [];
   let hasWarning = false;
+  let warningReason = null;
 
   try {
     words = await extractWords(buffer);
-    if (words.length === 0) hasWarning = true;
+    if (words.length === 0) {
+      hasWarning = true;
+      warningReason = 'No text extracted — file may be scanned, image-only, or empty.';
+    }
   } catch (err) {
-    console.error('PDF extraction failed:', err);
+    console.error('Extraction failed:', err);
     hasWarning = true;
+    warningReason = err.message || 'Text extraction failed.';
   }
 
   await storage.uploadPdf(id, buffer);
@@ -62,7 +67,7 @@ router.post('/', upload.single('pdf'), async (req, res) => {
     hasWarning,
   });
 
-  res.status(201).json({ ...book, isOwner: true });
+  res.status(201).json({ ...book, isOwner: true, warningReason });
 });
 
 // GET /api/books/:id/words
