@@ -69,12 +69,17 @@ button { font-family: inherit; cursor: pointer; }
 
 .book-card.has-warning { border-color: #713f12; }
 
+.book-badges {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
 .warning-badge {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.75rem;
   color: var(--accent);
   font-size: 1rem;
+  margin-left: auto;
 }
 
 .book-title {
@@ -83,7 +88,6 @@ button { font-family: inherit; cursor: pointer; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 1.5rem;
 }
 
 .word-count {
@@ -469,9 +473,6 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 .shared-badge {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.75rem;
   background: rgba(245, 158, 11, 0.15);
   color: var(--accent);
   font-size: 0.7rem;

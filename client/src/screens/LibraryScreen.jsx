@@ -78,8 +78,12 @@ export default function LibraryScreen({ onOpen, onAdmin }) {
         )}
         {books.map(book => (
           <div key={book.id} className={`book-card${book.hasWarning ? ' has-warning' : ''}`}>
-            {book.isShared && <span className="shared-badge">Shared</span>}
-            {book.hasWarning && <span className="warning-badge" title="Text extraction failed">⚠</span>}
+            {(book.isShared || book.hasWarning) && (
+              <div className="book-badges">
+                {book.isShared && <span className="shared-badge">Shared</span>}
+                {book.hasWarning && <span className="warning-badge" title="Text extraction failed">⚠</span>}
+              </div>
+            )}
             <div className="book-title" title={book.title}>{book.title}</div>
             <div className="word-count">{book.wordCount.toLocaleString()} words</div>
             {book.hasWarning && (
