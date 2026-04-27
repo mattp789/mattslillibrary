@@ -23,14 +23,16 @@ const loginLimiter = rateLimit({
   message: { error: 'Too many login attempts, try again later' },
 });
 
+app.get('/api/health', (req, res) => res.json({ ok: true }));
+
 app.use('/api/auth/login', loginLimiter);
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/books', require('./routes/books'));
 app.use('/api/admin', require('./routes/admin'));
 
 if (require.main === module) {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running at http://0.0.0.0:${PORT}`);
+  app.listen(PORT, '::', () => {
+    console.log(`Server running on port ${PORT}`);
   });
 }
 

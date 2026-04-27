@@ -11,7 +11,7 @@ describe('listBooks', () => {
   test('GETs /api/books and returns JSON', async () => {
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => [{ id: '1' }] });
     const result = await listBooks();
-    expect(mockFetch).toHaveBeenCalledWith('/api/books');
+    expect(mockFetch).toHaveBeenCalledWith('/api/books', { credentials: 'include' });
     expect(result).toEqual([{ id: '1' }]);
   });
 
@@ -25,7 +25,7 @@ describe('getWords', () => {
   test('GETs /api/books/:id/words', async () => {
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ['hello', 'world'] });
     const result = await getWords('abc');
-    expect(mockFetch).toHaveBeenCalledWith('/api/books/abc/words');
+    expect(mockFetch).toHaveBeenCalledWith('/api/books/abc/words', { credentials: 'include' });
     expect(result).toEqual(['hello', 'world']);
   });
 });
@@ -34,6 +34,6 @@ describe('deleteBook', () => {
   test('DELETEs /api/books/:id', async () => {
     mockFetch.mockResolvedValueOnce({ ok: true });
     await deleteBook('abc');
-    expect(mockFetch).toHaveBeenCalledWith('/api/books/abc', { method: 'DELETE' });
+    expect(mockFetch).toHaveBeenCalledWith('/api/books/abc', { credentials: 'include', method: 'DELETE' });
   });
 });
