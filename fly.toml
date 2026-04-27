@@ -1,6 +1,9 @@
 app = "rsvp-reader-api"
 primary_region = "iad"
 
+[env]
+  NODE_ENV = "production"
+
 [build]
 
 [http_service]
